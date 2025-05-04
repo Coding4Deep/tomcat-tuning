@@ -1,0 +1,7 @@
+FROM maven:3.8.7-eclipse-temurin-17 AS builder
+RUN apt update && git clone https://github.com/Coding4Deep/Nodejs-Java-CI-CD.git /java-app
+WORKDIR /java-app
+RUN mvn clean package
+
+FROM deepaksag/tuned-tomcat
+COPY --from=builder /java-app/target/k8s.war /usr/local/tomcat/webapps/
